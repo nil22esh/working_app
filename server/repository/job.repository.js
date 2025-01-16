@@ -119,3 +119,15 @@ export const deleteJob = async (jobId) => {
     throw new Error(`Failed to delete job: ${error.message}`);
   }
 };
+
+export const filteredJobs = async (filters) => {
+  try {
+    const jobs = await Job.find(filters);
+    if (jobs.length === 0) {
+      throw new Error("No jobs found with the given criteria.");
+    }
+    return jobs;
+  } catch (error) {
+    throw new Error(`Failed to fetch jobs: ${error.message}`);
+  }
+};

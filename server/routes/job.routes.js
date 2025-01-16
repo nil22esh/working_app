@@ -6,6 +6,7 @@ import {
   getJobById,
   getUserJobs,
   postJob,
+  searchJobs,
   updateJobById,
 } from "../controllers/job.controller.js";
 import authUser from "../middlewares/authUser.middleware.js";
@@ -64,5 +65,7 @@ jobRouter.get("/myjob/:id", authUser, checkClient, getJobById);
 jobRouter.put("/myjob/:id", authUser, checkClient, updateJobById);
 
 jobRouter.delete("/myjob/:id", authUser, checkClient, deleteJobById);
+
+jobRouter.get("/myjobs/filter/", authUser, searchJobs);
 
 export default jobRouter;

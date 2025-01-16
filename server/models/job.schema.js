@@ -77,6 +77,12 @@ const jobSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    applications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      },
+    ],
   },
   { timestamps: true }
 );

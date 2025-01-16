@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import dbConnection from "./db/dbConnect.js";
 import userRouter from "./routes/user.routes.js";
 import jobRouter from "./routes/job.routes.js";
+import applicationRouter from "./routes/application.routes.js";
 
 // configuring .env file in application
 dotenv.config();
@@ -24,6 +25,7 @@ app.get("/health", (req, res) => {
 // creating routes
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/jobs", jobRouter);
+app.use("/api/v1/applications", applicationRouter);
 
 // creating node server to run server
 app.listen(port, () => {

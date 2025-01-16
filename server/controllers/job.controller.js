@@ -2,6 +2,7 @@ import {
   allJobs,
   createNewJob,
   deleteJob,
+  filteredJobs,
   getJob,
   myJobs,
   updateJob,
@@ -136,6 +137,29 @@ export const deleteJobById = async (req, res, next) => {
     return res.status(400).json({
       success: false,
       message: "Failed to delete job by id!",
+      error: error.message,
+    });
+  }
+};
+
+export const searchJobs = async (req, res, next) => {
+  const { skills, location } = req.params;
+  try {
+    const filters = {
+      ...(skills && { skills: { $in: skills.split(",") } }),
+      ...(location && { location: new RegExp(location, "i") }),
+    };
+    const jobs = await filteredJobs(filters);
+    return res.status(200).json({
+      success: true,
+      message: "Jobs fetched successfully!",
+      TotalJobs: jobs.length,
+      SearchJobs: jobs,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "Failed to search jobs!",
       error: error.message,
     });
   }
