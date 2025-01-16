@@ -228,6 +228,153 @@ This project provides a job management API for creating, retrieving, updating, a
 
 ---
 
+# Application Management API
+
+This API handles job application management, allowing users to apply for jobs, view their applications, and manage application statuses.
+
+## **Routes and Descriptions**
+
+### 1. **POST /apply**
+
+- **Description:** Allows a user to apply for a job with a cover letter.
+- **Middleware:** `authUser`
+- **Request Body:**
+  ```json
+  {
+    "jobId": "<jobId>",
+    "coverLetter": "I am interested in this job because..."
+  }
+  ```
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "Application created successfully",
+    "NewApplication": {
+      "userId": "<userId>",
+      "jobId": "<jobId>",
+      "coverLetter": "I am interested in this job..."
+    }
+  }
+  ```
+
+---
+
+### 2. **GET /totalapplications/:id**
+
+- **Description:** Retrieves all applications for a specific job.
+- **Middleware:** `authUser`, `checkAdmin`
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "Applications retrieved successfully",
+    "TotalApplications": 5,
+    "Applications": [{ "userId": "<userId>", "coverLetter": "..." }]
+  }
+  ```
+
+---
+
+### 3. **GET /myapplications**
+
+- **Description:** Fetches all job applications submitted by the currently logged-in user.
+- **Middleware:** `authUser`
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "User applications retrieved successfully",
+    "TotalApplications": 2,
+    "Applications": [{ "jobId": "<jobId>", "status": "pending" }]
+  }
+  ```
+
+---
+
+### 4. **GET /myapplication/:id**
+
+- **Description:** Fetches a specific application by its ID.
+- **Middleware:** `authUser`
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "Application retrieved successfully",
+    "Application": {
+      "jobId": "<jobId>",
+      "status": "pending",
+      "coverLetter": "..."
+    }
+  }
+  ```
+
+---
+
+### 5. **PUT /updateApplication/:id**
+
+- **Description:** Updates the status of a specific job application.
+- **Middleware:** `authUser`
+- **Request Body:**
+  ```json
+  {
+    "status": "accepted"
+  }
+  ```
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "Application status updated successfully",
+    "UpdatedApplication": {
+      "status": "accepted"
+    }
+  }
+  ```
+
+---
+
+### 6. **DELETE /deleteApplication/:id**
+
+- **Description:** Deletes a job application by its ID.
+- **Middleware:** `authUser`
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "message": "Application deleted successfully"
+  }
+  ```
+
+---
+
+## **Error Handling**
+
+- Consistent error messages with HTTP status codes.
+- Example:
+  ```json
+  {
+    "success": false,
+    "message": "Invalid job ID",
+    "error": "Error message here"
+  }
+  ```
+
+## **Models Used**
+
+### **Application Schema:**
+
+```javascript
+{
+    userId: ObjectId,
+    jobId: ObjectId,
+    status: { type: String, enum: ["pending", "accepted", "rejected"] },
+    coverLetter: String
+}
+```
+
+---
+
 ## 📌 Auth Middlewares:
 
 This repository contains two essential middlewares for user authentication and authorization in an Express application for Admins:
