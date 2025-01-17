@@ -214,6 +214,441 @@ This project provides a job management API for creating, retrieving, updating, a
 
 ---
 
+# Skill Verification API
+
+## Routes and Descriptions
+
+### POST `/requestverify`
+
+- **Description:** Allows a user to request skill verification.
+- **Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Skill verification request sent successfully",
+  "data": { "skill": "JavaScript", "status": "pending" }
+}
+```
+
+### GET `/skillverification/status/:id`
+
+- **Description:** Fetch the status of a specific skill verification request.
+- **Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Skill verification status retrieved successfully",
+  "data": "pending"
+}
+```
+
+### GET `/allskills`
+
+- **Description:** Retrieve all skill verifications (admin access required).
+- **Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "All skill verifications retrieved successfully",
+  "TotalCount": 5,
+  "data": [{ "skill": "Python", "status": "passed" }]
+}
+```
+
+### PUT `/verifyskill/:id`
+
+- **Description:** Update the status of a skill verification request (admin access required).
+- **Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Skill verification updated successfully",
+  "data": { "skill": "Java", "status": "passed" }
+}
+```
+
+### DELETE `/deleteskill/:id`
+
+- **Description:** Delete a specific skill verification request (admin access required).
+- **Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Skill verification deleted successfully"
+}
+```
+
+---
+
+# Notification Service API
+
+This **Notification Service API** handles the creation, retrieval, updating, and deletion of user notifications. It ensures secure access through authentication middleware.
+
+## **Routes and Descriptions**
+
+### 1. Send Notification
+
+**Endpoint:**
+
+```
+POST /api/notifications/send-notifications
+```
+
+**Description:** Sends a new notification to a specific user. The user must be authenticated.
+
+**Request Body:**
+
+```json
+{
+  "type": "job-match",
+  "message": "You have a new job match!"
+}
+```
+
+**Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Notification sent successfully.",
+  "SentNotification": {
+    "_id": "64f31b2d9c1234567",
+    "userId": "64f31b2d9c1234567",
+    "type": "job-match",
+    "message": "You have a new job match!",
+    "read": false
+  }
+}
+```
+
+---
+
+### 2. Get User Notifications
+
+**Endpoint:**
+
+```
+GET /api/notifications/user-notifications
+```
+
+**Description:** Fetches all notifications for the authenticated user.
+
+**Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "User notifications retrieved successfully.",
+  "TotalCount": 2,
+  "Notifications": [
+    {
+      "_id": "64f31b2d9c1234567",
+      "type": "application-status",
+      "message": "Your application has been accepted!",
+      "read": false
+    }
+  ]
+}
+```
+
+---
+
+### 3. Mark Notification as Read
+
+**Endpoint:**
+
+```
+PUT /api/notifications/update/user-notifications/:id
+```
+
+**Description:** Marks a specific notification as read by its ID. The user must be authenticated.
+
+**Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Notification marked as read successfully.",
+  "UpdatedNotification": {
+    "_id": "64f31b2d9c1234567",
+    "type": "job-match",
+    "message": "You have a new job match!",
+    "read": true
+  }
+}
+```
+
+---
+
+### 4. Delete Notification
+
+**Endpoint:**
+
+```
+DELETE /api/notifications/delete-user-notifications/:id
+```
+
+**Description:** Deletes a notification by its ID for the authenticated user.
+
+**Response Example:**
+
+```json
+{
+  "success": true,
+  "message": "Notification deleted successfully."
+}
+```
+
+---
+
+## Notification Routes
+
+### **POST** `/send-notifications`
+
+- **Description:** Send a notification to a user.
+- **Response Example:**
+
+```json
+{
+  "message": "Notification sent successfully!"
+}
+```
+
+### **GET** `/user-notifications`
+
+- **Description:** Get all notifications for the authenticated user.
+- **Response Example:**
+
+```json
+[
+  {
+    "id": "1",
+    "message": "New job posted!",
+    "read": false
+  }
+]
+```
+
+### **PUT** `/update/user-notifications/:id`
+
+- **Description:** Mark a notification as read.
+- **Response Example:**
+
+```json
+{
+  "message": "Notification marked as read."
+}
+```
+
+### **DELETE** `/delete-user-notifications/:id`
+
+- **Description:** Delete a notification.
+- **Response Example:**
+
+```json
+{
+  "message": "Notification deleted successfully."
+}
+```
+
+## Skill Verification Routes
+
+### **POST** `/requestverify`
+
+- **Description:** Request skill verification for a user.
+- **Response Example:**
+
+```json
+{
+  "message": "Skill verification requested successfully."
+}
+```
+
+### **GET** `/skillverification/status/:id`
+
+- **Description:** Get the skill verification status of a user.
+- **Response Example:**
+
+```json
+{
+  "status": "Pending"
+}
+```
+
+### **GET** `/allskills`
+
+- **Description:** Get all skill verifications (Admin only).
+- **Response Example:**
+
+```json
+[
+  {
+    "user": "John Doe",
+    "skill": "Carpentry",
+    "status": "Verified"
+  }
+]
+```
+
+### **PUT** `/verifyskill/:id`
+
+- **Description:** Verify a user's skill (Admin only).
+- **Response Example:**
+
+```json
+{
+  "message": "Skill verified successfully."
+}
+```
+
+### **DELETE** `/deleteskill/:id`
+
+- **Description:** Delete a skill verification record (Admin only).
+- **Response Example:**
+
+```json
+{
+  "message": "Skill verification deleted successfully."
+}
+```
+
+## Search and Match Routes
+
+### **POST** `/search/workers`
+
+- **Description:** Search for workers based on skill.
+- **Response Example:**
+
+```json
+[
+  {
+    "worker": "John Doe",
+    "skills": ["Carpentry", "Plumbing"]
+  }
+]
+```
+
+### **POST** `/search/jobs`
+
+- **Description:** Search for jobs based on skills.
+- **Response Example:**
+
+```json
+[
+  {
+    "jobTitle": "Plumber Needed",
+    "requiredSkills": ["Plumbing"]
+  }
+]
+```
+
+### **POST** `/match/worker`
+
+- **Description:** Match a worker to a job.
+- **Response Example:**
+
+```json
+{
+  "message": "Worker matched successfully."
+}
+```
+
+### **GET** `/recommend/jobs`
+
+- **Description:** Get recommended jobs for a worker.
+- **Response Example:**
+
+```json
+[
+  {
+    "jobTitle": "Electrician Required",
+    "location": "Delhi"
+  }
+]
+```
+
+### **GET** `/recommend/workers/:jobId`
+
+- **Description:** Get recommended workers for a specific job.
+- **Response Example:**
+
+```json
+[
+  {
+    "worker": "Jane Doe",
+    "skills": ["Welding"]
+  }
+]
+```
+
+## Payment Routes
+
+### **POST** `/create`
+
+- **Description:** Create a payment request.
+- **Response Example:**
+
+```json
+{
+  "message": "Payment request created successfully."
+}
+```
+
+### **PUT** `/process/:paymentId`
+
+- **Description:** Process a payment.
+- **Response Example:**
+
+```json
+{
+  "message": "Payment processed successfully."
+}
+```
+
+### **GET** `/status/:paymentId`
+
+- **Description:** Get the status of a payment.
+- **Response Example:**
+
+```json
+{
+  "status": "Completed"
+}
+```
+
+### **POST** `/refund/:paymentId`
+
+- **Description:** Refund a payment (Admin only).
+- **Response Example:**
+
+```json
+{
+  "message": "Payment refunded successfully."
+}
+```
+
+### **GET** `/history`
+
+- **Description:** Get payment history for the authenticated user.
+- **Response Example:**
+
+```json
+[
+  {
+    "paymentId": "12345",
+    "amount": "1000",
+    "status": "Completed"
+  }
+]
+```
+
+---
+
 ## Error Handling
 
 - Standardized error responses are returned with:
@@ -238,6 +673,8 @@ This repository contains two essential middlewares for user authentication and a
 
 3. **checkClient**: Ensures only users with the client role can post jobs.
 
+4. **uploadFileMiddleware**: Ensures to uploading files functionality.
+
 ---
 
 ## 📦 Technologies Used
@@ -250,6 +687,8 @@ This repository contains two essential middlewares for user authentication and a
 - JWT
 - Cookie-Parser
 - Express-Validation
+- Multer
+- Nodemailer
 
 Feel free to contribute and improve this project! 🚀
 

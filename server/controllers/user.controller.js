@@ -4,6 +4,7 @@ import {
   createUser,
   singleUser,
 } from "../repository/user.repository.js";
+import { sendWelcomeEmail } from "../Emails/sendEmail.js";
 import User from "../models/user.schema.js";
 
 export const register = async (req, res, next) => {
@@ -37,6 +38,7 @@ export const register = async (req, res, next) => {
       available,
       language,
     });
+    sendWelcomeEmail(user);
     const token = await user.generateToken();
     return res.status(201).json({
       success: true,
